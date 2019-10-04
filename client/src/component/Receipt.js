@@ -1,8 +1,17 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
+import { saveAs } from 'file-saver';
 
 const Receipt = () => {
-  const onClick = () => {};
+  const onClick = () => {
+    axios.post('/api/downloadpdf')
+      .then(() => axios.get('/api/downloadpdf', { responseType: 'blob' }))
+      .then(res => {
+        const pdfBlob = new Blob([res.data], { type: 'application/pdf' });
+        saveAs(pdfBlob, 'newPdf.pdf');
+      });
+  };
 
   return (
     <div className="container">
